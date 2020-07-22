@@ -21,7 +21,7 @@ public class ProductController {
 	
 	public ProductController() {
 		for (int c = 0; c < 10; c++) {
-			products.add(new Product(c + 1L, "Product " + (c + 1L)));
+			products.add(new Product(c + 1L, "Product " + (c + 1L),100D*(1+c)));
 		}
 	}
 	
