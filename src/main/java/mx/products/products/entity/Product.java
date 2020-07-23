@@ -10,7 +10,7 @@ import javax.persistence.Table;
 //Vamos a hacerla persistida en la BD
 
 @Entity														// Es la más importante
-@Table(name = "product")									// Dice vs qué tabla de la BD mapea
+@Table(name = "products")									// Dice vs qué tabla de la BD mapea
 public class Product {
 	
 	@Id
@@ -47,4 +47,13 @@ public class Product {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+	
 }
