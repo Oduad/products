@@ -23,8 +23,9 @@ public class ProductController {
 	@Autowired // Inyecta el bean (instancia creada en ProductRepository)
 	private ProductRepository productRepo;
 
-	/*private List<Product> products = new ArrayList<>();
-
+	/*Esto se nos va: 
+	 
+	private List<Product> products = new ArrayList<>();
 	public ProductController() {
 		for (int c = 0; c < 10; c++) {
 			products.add(new Product(c + 1L, "Product " + (c + 1L), 100D * (1 + c)));
