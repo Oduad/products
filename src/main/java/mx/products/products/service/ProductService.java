@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import mx.products.products.entity.Product;
 import mx.products.products.repository.ProductRepository;
+import mx.products.products.validators.ProductValidator;
 
-@Service // -Le dice a que cree una instancia de este objeto para poder inyectarlo con
-			// @autowired
+@Service // -Le dice a que cree una instancia de este objeto para poder inyectarlo en otros objetos con @Autowired
 public class ProductService {
 
 	// El producto debe proporcionar todos los métodos de negocios que necesite el
@@ -50,8 +50,11 @@ public class ProductService {
 	return existProduct;
 	}*/
 	
-	@Transactional
+	@Transactional		//Debe ser transaccional
 	public Product save(Product product) {
+		
+		ProductValidator.save(product);
+		
 		if (product.getId() == null) {
 			Product newProduct = productRepo.save(product);
 			return newProduct;
