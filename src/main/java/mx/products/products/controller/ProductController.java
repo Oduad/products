@@ -1,6 +1,8 @@
 package mx.products.products.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import mx.products.products.dtos.ProductDTO;
 import mx.products.products.entity.Product;
 import mx.products.products.service.ProductService;
 
@@ -25,9 +28,10 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping(value = "/products/{productId}")
-	public ResponseEntity<Product> findById(@PathVariable("productId") Long productId) {
+	public ResponseEntity<ProductDTO> findById(@PathVariable("productId") Long productId) {
 		Product product = productService.findById(productId);
-		return new ResponseEntity<Product>(product, HttpStatus.OK);
+		ProductDTO productDTO = new ProductDTO(product.getId(),product.getName(),product.getPrice()); 
+		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/products/{productId}")
@@ -37,20 +41,40 @@ public class ProductController {
 	}
 	
 	@GetMapping(value = "/products")
-	public ResponseEntity<List<Product>> findAll() {
+	public ResponseEntity<List<ProductDTO>> findAll() {
 		List<Product> products = productService.findAll();
-		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+		
+		/*List<ProductDTO> dtoProducts = products.stream().map(product ->{
+			return ProductDTO productDTO = new ProductDTO(product.getId(),product.getName(),product.getPrice());
+		}).collect(Collectors.toList());*/
+		
+		List<ProductDTO> dtoProducts = new ArrayList<>();
+		
+		for (Product product : products) {
+			ProductDTO productDTO = new ProductDTO(product.getId(),product.getName(),product.getPrice());
+			dtoProducts.add(productDTO);
+		}
+		
+		return new ResponseEntity<List<ProductDTO>>(dtoProducts, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/products")
-	public ResponseEntity<Product> create(@RequestBody Product product) {
+	public ResponseEntity<ProductDTO> create(@RequestBody Product product) {
 		Product newProduct = productService.save(product);
-		return new ResponseEntity<Product>(newProduct, HttpStatus.CREATED);
+		
+		//List<ProductDTO> dtoProducts = new ArrayList<>();
+		
+			ProductDTO productDTO = new ProductDTO(newProduct.getId(),newProduct.getName(),newProduct.getPrice());
+
+		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.CREATED);
 	}
 
 	@PutMapping(value = "/products")
-	public ResponseEntity<Product> update(@RequestBody Product product) {
+	public ResponseEntity<ProductDTO> update(@RequestBody Product product) {
 		Product updateProduct = productService.save(product);
-		return new ResponseEntity<Product>(updateProduct, HttpStatus.OK);
+
+			ProductDTO productDTO = new ProductDTO(updateProduct.getId(),updateProduct.getName(),updateProduct.getPrice());
+
+		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
 	}
 }
