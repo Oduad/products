@@ -1,5 +1,5 @@
 package mx.products.products.dtos;
-
+/**/
 public class ProductDTO {
 	
 	private Long id;
