@@ -3,6 +3,7 @@ package mx.products.products.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import mx.products.products.entity.Product;
@@ -31,26 +32,11 @@ public class ProductService {
 		productRepo.delete(product);
 	}
 
-	public List<Product> findAll() {
-		List<Product> products = productRepo.findAll();
+	public List<Product> findAll(Pageable page) {				// -Agregamos Pageable page como parámetro
+		List<Product> products = productRepo.findAll(page).toList();
 		return products;
 	}
 
-	/*public Product create(Product product) {
-	Product newProduct = productRepo.save(product);
-	return newProduct;
-	}
-
-	public Product update(Product product) {
-	Product existProduct = productRepo.findById(product.getId())
-			.orElseThrow(() -> new RuntimeException("This product does not exist."));
-	existProduct.setName(product.getName());
-	existProduct.setPrice(product.getPrice());
-	productRepo.save(existProduct);
-	return existProduct;
-	}*/
-	
-	@Transactional		//Debe ser transaccional
 	public Product save(Product product) {
 		
 		ProductValidator.save(product);

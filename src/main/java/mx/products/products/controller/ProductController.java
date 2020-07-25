@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mx.products.products.converters.ProductConverter;
@@ -22,8 +25,6 @@ import mx.products.products.service.ProductService;
 
 @RestController
 public class ProductController {
-
-	// EL CONTROLLER SE VA A SIMPLIFICAR
 
 	@Autowired // Inyecta el bean (instancia creada en ProductRepository)
 	private ProductService productService;
@@ -44,13 +45,16 @@ public class ProductController {
 	}
 
 	@GetMapping(value = "/products")
-	public ResponseEntity<List<ProductDTO>> findAll() {
-		List<Product> products = productService.findAll();
+	public ResponseEntity<List<ProductDTO>> findAll(
+			@RequestParam(value = "pageNumber", required = false, defaultValue = "0") int pageNumber,
+			@RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize) {
+		
+		Pageable page = PageRequest.of(pageNumber, pageSize);
+		List<Product> products = productService.findAll(page);
 		List<ProductDTO> dtoProducts = converter.fromEntity(products);
-
 		return new ResponseEntity<List<ProductDTO>>(dtoProducts, HttpStatus.OK);
 	}
-
+	
 	@PostMapping(value = "/products")
 	public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO product) {
 		Product newProduct = productService.save(converter.fromDTO(product));
@@ -61,7 +65,7 @@ public class ProductController {
 	@PutMapping(value = "/products")
 	public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO product) {
 		Product updateProduct = productService.save(converter.fromDTO(product));
-		ProductDTO productDTO =converter.fromEntity(updateProduct);
+		ProductDTO productDTO = converter.fromEntity(updateProduct);
 		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
 	}
 }
