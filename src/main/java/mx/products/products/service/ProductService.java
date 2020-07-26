@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import mx.products.products.entity.Product;
+import mx.products.products.exceptions.NoDataFoundException;
 import mx.products.products.repository.ProductRepository;
 import mx.products.products.validators.ProductValidator;
 
@@ -21,14 +22,14 @@ public class ProductService {
 
 	public Product findById(Long productId) {
 		Product product = productRepo.findById(productId)
-				.orElseThrow(() -> new RuntimeException("This product does not exist."));
+				.orElseThrow(() -> new 	NoDataFoundException("This product does not exist."));
 		return product;
 	}
 
 	@Transactional
 	public void delete(Long productId) {
 		Product product = productRepo.findById(productId)
-				.orElseThrow(() -> new RuntimeException("This product does not exist."));
+				.orElseThrow(() -> new NoDataFoundException("This product does not exist."));
 		productRepo.delete(product);
 	}
 
@@ -46,7 +47,7 @@ public class ProductService {
 			return newProduct;
 		}
 		Product existProduct = productRepo.findById(product.getId())
-				.orElseThrow(() -> new RuntimeException("This product does not exist."));
+				.orElseThrow(() -> new NoDataFoundException("This product does not exist."));
 		existProduct.setName(product.getName());
 		existProduct.setPrice(product.getPrice());
 		productRepo.save(existProduct);
