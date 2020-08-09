@@ -3,10 +3,11 @@ package mx.products.products.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-//Siempre que no podamos controlar el error. Es un error inesperado que no sabemos de dónde viene.
-//RuntimeException lo podemos lanzar en cualquier lado.
+// Siempre que no podamos controlar el error. Es un error inesperado que no sabemos de dónde viene.
+// Los exception se definen en el throws y tienen que manejar un try-catch.
+// RuntimeException lo podemos lanzar en cualquier lado.
 
-@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)	//Código de estado
 public class GenerlServiceException extends RuntimeException{
 
 	public GenerlServiceException() {
