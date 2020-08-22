@@ -26,7 +26,7 @@ import mx.products.products.service.ProductService;
 @RestController
 public class ProductController {
 
-	@Autowired // Inyecta el bean (instancia creada en ProductRepository)
+	@Autowired 							// Inyecta el bean (instancia creada en ProductRepository)
 	private ProductService productService;
 
 	private ProductConverter converter = new ProductConverter();
